@@ -1,0 +1,28 @@
+h1, h2, h3, h4, h5, h6{
+	font-family: 'ITC Goudy Sans W01',Arial, Helvetica, Sans-Serif;
+	font-weight: 700;
+	font-style: bold;
+}
+
+h1{
+	font-size: 58px;
+}
+
+h3{
+	font-size: 40px;
+}
+
+h4{
+	font-size: 30px;
+}
+
+body{ 
+	padding-top: 70px; 
+}
+
+p, div{
+	font-family: 'ITC Goudy Sans W01',Arial, Helvetica, Sans-Serif;
+	font-weight: 500;
+	font-style: normal;
+	font-size: 21px;
+}
