@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Project;
 
 class ProjectsController extends Controller
 {
@@ -15,7 +16,8 @@ class ProjectsController extends Controller
      */
     public function index()
     {
-        //
+        $projects = Project::all();
+        return view('projects.index', ['projects' => $projects]);
     }
 
     /**
@@ -25,7 +27,7 @@ class ProjectsController extends Controller
      */
     public function create()
     {
-        //
+        return view('project.create');
     }
 
     /**
@@ -36,7 +38,19 @@ class ProjectsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $name = $request->input('name');
+        $repo_url = $request->input('repo_url');
+        $init_script = $request->input('init_script');
+
+        $project = new Project;
+
+        $project->name = $name;
+        $project->repo_url = $repo_url;
+        $project->init_script = $init_script;
+
+        $project->save();
+
+        return redirect()->action('ProjectsController@show', $name);
     }
 
     /**
@@ -45,9 +59,16 @@ class ProjectsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($name)
     {
-        //
+        $project = Project::where('name', $name)
+                        ->get()
+                        ->first();
+        if (is_null($project))
+        {
+            abort(404);
+        }
+        return view('project.index')->with('project', $project);
     }
 
     /**
@@ -56,7 +77,7 @@ class ProjectsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($name)
     {
         //
     }
@@ -68,7 +89,7 @@ class ProjectsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $name)
     {
         //
     }
@@ -79,7 +100,7 @@ class ProjectsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($name)
     {
         //
     }

@@ -12,8 +12,7 @@
   <div class="container">
     <a class="navbar-brand" href="{{ url('/') }}">Quadraxis</a>
     <ul class="nav navbar-nav">
-    <li><a href="{{ url('/images') }}">Available AMIs</a></li>
-    <li><a href="{{ url('/deployments') }}">Deployments</a></li>
+    <li><a href="{{ url('/projects') }}">Projects</a></li>
     </ul>
   </div>
 </nav>

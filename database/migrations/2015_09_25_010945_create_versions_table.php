@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateImagesTable extends Migration
+class CreateVersionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,8 +12,12 @@ class CreateImagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('images', function (Blueprint $table) {
+        Schema::create('versions', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('project_id');
+            $table->string('image_id');
+            $table->text('user_data');
+            $table->string('auto_scaling_group');
             $table->timestamps();
         });
     }
@@ -25,6 +29,6 @@ class CreateImagesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('images');
+        Schema::drop('versions');
     }
 }

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDeploymentsTable extends Migration
+class CreateEnvVariablesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,8 +12,13 @@ class CreateDeploymentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('deployments', function (Blueprint $table) {
+        Schema::create('env_variables', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('project_id');
+            $table->integer('version');
+            $table->string('key');
+            $table->string('value');
+            $table->boolean('sensitive');
             $table->timestamps();
         });
     }
@@ -25,6 +30,6 @@ class CreateDeploymentsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('deployments');
+        Schema::drop('env_variables');
     }
 }

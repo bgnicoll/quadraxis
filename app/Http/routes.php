@@ -13,5 +13,11 @@
 
 Route::get('/', 'HomeController@index');
 
-Route::get('deployments', 'DeploymentController@index');
-Route::get('images', 'ImagesController@index');
+Route::get('projects', 'ProjectsController@index');
+
+Route::get('project/create', 'ProjectsController@create');
+
+Route::post('project/store', 'ProjectsController@store');
+
+Route::get('project/{name}', 'ProjectsController@show');
+
