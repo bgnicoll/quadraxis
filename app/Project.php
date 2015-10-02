@@ -8,7 +8,7 @@ class Project extends Model
 {
     public $timestamps = true;
 
-    protected $fillable = ['name', 'repo_url', 'init_script'];
+    protected $fillable = ['name', 'repo_url', 'init_script', 'base_ami_id'];
 
     public function env_variables()
     {

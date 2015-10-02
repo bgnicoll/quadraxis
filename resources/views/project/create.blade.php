@@ -16,7 +16,13 @@
 			<div class="form-group">
 				<p>
 					<label for="repo_url">GitHub Repo URL</label>
-					<input type="text" class="form-control" name="repo_url" id="repo_url" placeholder="https://github.com/you/coolProject">
+					<input type="text" class="form-control" name="repo_url" id="repo_url" placeholder="https://github.com/your/coolProject">
+				</p>
+			</div>
+			<div class="form-group">
+				<p>
+					<label for="base-ami">Base AMI ID</label>
+					<input type="text" class="form-control" name="base-ami" id="base-ami" placeholder="ami-d05e75b8">
 				</p>
 			</div>
 			<div class="form-group">

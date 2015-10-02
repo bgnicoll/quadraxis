@@ -19,5 +19,7 @@ Route::get('project/create', 'ProjectsController@create');
 
 Route::post('project/store', 'ProjectsController@store');
 
+Route::post('project/{name}/webhook', 'ProjectsController@webhook');
+
 Route::get('project/{name}', 'ProjectsController@show');
 

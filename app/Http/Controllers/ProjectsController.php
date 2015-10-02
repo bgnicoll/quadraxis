@@ -59,7 +59,7 @@ class ProjectsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($name)
+    public function show(Request $request, $name)
     {
         $project = Project::where('name', $name)
                         ->get()
@@ -68,6 +68,7 @@ class ProjectsController extends Controller
         {
             abort(404);
         }
+        $project->webhook_url = $request->url() . "/webhook";
         return view('project.index')->with('project', $project);
     }
 
@@ -103,5 +104,18 @@ class ProjectsController extends Controller
     public function destroy($name)
     {
         //
+    }
+
+    public function webhook(Request $request, $name)
+    {
+        $project = Project::where('name', $name)
+                        ->get()
+                        ->first();
+        if (is_null($project))
+        {
+            abort(404);
+        }
+
+        
     }
 }
