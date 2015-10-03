@@ -38,15 +38,12 @@ class ProjectsController extends Controller
      */
     public function store(Request $request)
     {
-        $name = $request->input('name');
-        $repo_url = $request->input('repo_url');
-        $init_script = $request->input('init_script');
-
         $project = new Project;
 
-        $project->name = $name;
-        $project->repo_url = $repo_url;
-        $project->init_script = $init_script;
+        $project->name = $request->input('name');
+        $project->repo_url = $request->input('repo_url');
+        $project->init_script = $request->input('init_script');
+        $project->base_ami_id = $request->input('base-ami');
 
         $project->save();
 
@@ -116,6 +113,6 @@ class ProjectsController extends Controller
             abort(404);
         }
 
-        
+
     }
 }
