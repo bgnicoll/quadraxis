@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Project;
+use Aws\Ec2\Ec2Client;
 
 class ProjectsController extends Controller
 {
@@ -113,6 +114,43 @@ class ProjectsController extends Controller
             abort(404);
         }
 
+        $ec2Client = Ec2Client::factory(array(
+            'region'  => getenv('AWS_REGION'),
+            'version' => '2012-10-17'
+        ));
 
+        $result = $ec2Client->runInstances(array(
+            'ImageId'        => $project->base_ami_id,
+            'MinCount'       => 1,
+            'MaxCount'       => 1,
+            'InstanceType'   => 'm1.small',
+            'UserData'       => $project->init_script
+            ));
+        $instanceId = $result->search('Instances[0].InstanceId');
+
+        $ec2Client->waitUntil('InstanceRunning', [
+            'InstanceIds' => array($instanceId)
+        ]);
+
+        $result = $ec2Client->createImage(array(
+            'InstanceId' => $instanceId
+        ));
+
+        $imageId = $result->search('ImageId');
+
+        while (1) { 
+            $result = $ec2Client->describeImages(array(
+                'ImageIds' => array($imageId)
+            ));
+            $imageState = $result->search('Images[0].State');
+            if ($imageState == 'available') {
+                break;
+            }
+            sleep(30);
+        }
+
+        $result = $ec2Client->terminateInstances(array(
+            'InstanceIds' => array($instanceId)
+        ));
     }
 }
