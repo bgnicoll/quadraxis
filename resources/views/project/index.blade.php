@@ -17,6 +17,10 @@
 	<div >
 		<p><span id="base-ami">{{ $project->base_ami_id}}</span></p>
 	</div>
+	<label class="vertical-pad">Initialization Script</label>
+	<div >
+		<p>{{ $project->init_script}}</p>
+	</div>
 	<div class="row vertical-pad">
 		<h3>Environment Variables</h3>
 		<table class="table table-striped table-hover">

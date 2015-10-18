@@ -48,7 +48,7 @@ class ProjectsController extends Controller
 
         $project->save();
 
-        return redirect()->action('ProjectsController@show', $name);
+        return redirect()->action('ProjectsController@show', $project->name);
     }
 
     /**
@@ -109,31 +109,35 @@ class ProjectsController extends Controller
         $project = Project::where('name', $name)
                         ->get()
                         ->first();
-        if (is_null($project))
-        {
+        if (is_null($project)){
             abort(404);
         }
 
         $ec2Client = Ec2Client::factory(array(
             'region'  => getenv('AWS_REGION'),
-            'version' => '2012-10-17'
+            'version' => '2015-10-01'
         ));
 
         $result = $ec2Client->runInstances(array(
             'ImageId'        => $project->base_ami_id,
             'MinCount'       => 1,
             'MaxCount'       => 1,
-            'InstanceType'   => 'm1.small',
-            'UserData'       => $project->init_script
-            ));
+            'InstanceType'   => 't2.medium',
+            'UserData'       => base64_encode($project->init_script),
+            'SecurityGroups' => array('torvus-sec-group')
+        ));
+
         $instanceId = $result->search('Instances[0].InstanceId');
 
         $ec2Client->waitUntil('InstanceRunning', [
             'InstanceIds' => array($instanceId)
         ]);
 
+        sleep(120);
+
         $result = $ec2Client->createImage(array(
-            'InstanceId' => $instanceId
+            'InstanceId' => $instanceId,
+            'Name' => $project->name . time()
         ));
 
         $imageId = $result->search('ImageId');
@@ -149,8 +153,8 @@ class ProjectsController extends Controller
             sleep(30);
         }
 
-        $result = $ec2Client->terminateInstances(array(
-            'InstanceIds' => array($instanceId)
-        ));
+        // $result = $ec2Client->terminateInstances(array(
+        //     'InstanceIds' => array($instanceId)
+        // ));
     }
 }
