@@ -115,7 +115,7 @@ class ProjectsController extends Controller
 
         $ec2Client = Ec2Client::factory(array(
             'region'  => getenv('AWS_REGION'),
-            'version' => '2015-10-01'
+            'version' => '2012-10-17'
         ));
 
         $result = $ec2Client->runInstances(array(
@@ -153,8 +153,8 @@ class ProjectsController extends Controller
             sleep(30);
         }
 
-        // $result = $ec2Client->terminateInstances(array(
-        //     'InstanceIds' => array($instanceId)
-        // ));
+        $result = $ec2Client->terminateInstances(array(
+            'InstanceIds' => array($instanceId)
+        ));
     }
 }
